@@ -175,9 +175,3 @@ deleteModalButtons.addEventListener("click", event => {
         tasks.forEach(i => tasksList.append(createItems(i.id, i.text)));
     }
 })
-
-
-
-
-
-
