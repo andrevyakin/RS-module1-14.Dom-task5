@@ -32,10 +32,7 @@ const elementFactory = (element, parameters, parent) => {
         el.htmlFor = parameters.htmlFor;
     if (parameters.text)
         el.textContent = parameters.text;
-    if (!parent)
-        return el
-    else
-        Array.from(document.querySelectorAll(parent)).at(-1).append(el);
+    Array.from(document.querySelectorAll(parent)).at(-1).append(el);
 }
 
 const createItems = (id, text) => {
@@ -115,37 +112,31 @@ createTaskBlock.addEventListener("submit", event => {
 })
 
 const createModalWindow = () => {
-    const modalOverlay = elementFactory("div", {
+    elementFactory("div", {
         className: ["modal-overlay", "modal-overlay_hidden"]
-    });
-    const deleteModal = elementFactory("div", {
+    }, "body");
+    elementFactory("div", {
         className: "delete-modal"
-    });
-    modalOverlay.append(deleteModal);
-    const question = elementFactory("h3", {
+    }, ".modal-overlay");
+    elementFactory("h3", {
         className: "delete-modal__question",
         text: "Вы действительно хотите удалить эту задачу?"
-    });
-    deleteModal.append(question);
-    const divButtons = elementFactory("div", {
+    }, ".delete-modal");
+    elementFactory("div", {
         className: "delete-modal__buttons"
-    });
-    deleteModal.append(divButtons);
-    const cancelButton = elementFactory("button", {
+    }, ".delete-modal");
+    elementFactory("button", {
         className: ["delete-modal__button", "delete-modal__cancel-button"],
         text: "Отмена"
-    });
-    divButtons.append(cancelButton);
-    const confirmButton = elementFactory("button", {
+    }, ".delete-modal__buttons");
+    elementFactory("button", {
         className: ["delete-modal__button", "delete-modal__confirm-button"],
         text: "Удалить"
-    })
-    divButtons.append(confirmButton);
-    return modalOverlay;
+    }, ".delete-modal__buttons");
 }
 
-const modalWindow = createModalWindow();
-document.body.appendChild(modalWindow);
+createModalWindow();
+const modalWindow = document.querySelector(".modal-overlay");
 let isDeleteButton;
 tasksList.addEventListener("click", event => {
     isDeleteButton = event.target.closest(".delete-button");
@@ -153,7 +144,7 @@ tasksList.addEventListener("click", event => {
         removeErrorMessage();
         modalWindow.classList.toggle("modal-overlay_hidden");
     }
-})
+});
 
 const deleteModalButtons = document.querySelector(".delete-modal__buttons");
 deleteModalButtons.addEventListener("click", event => {
